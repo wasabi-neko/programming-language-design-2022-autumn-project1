@@ -1,3 +1,4 @@
+import string
 from typing import Any
 
 from command.command import Command
@@ -5,6 +6,12 @@ from user_sheet.database import Database
 from user_sheet.usersheet import User, Sheet
 from permission.permission import Permission, PermissionFactory
 
+
+def less_dangerous_eval(equation):
+    if not set(equation).intersection(string.ascii_letters + '{}[]_;\n'):
+        return eval(equation)
+    else:
+        raise ValueError('illegal input')
 
 class CreateUser(Command):
 
@@ -121,7 +128,7 @@ class EditSheetValue(Command):
         row, col, val = input().split(' ')
         row = int(row)
         col = int(col)
-        val = int(val)  # TODO:
+        val = less_dangerous_eval(val)
 
         sheet.edit_sheet(row, col, val)
         db.update_sheet(username, sheet_name, sheet)
