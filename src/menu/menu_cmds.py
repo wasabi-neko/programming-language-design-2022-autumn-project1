@@ -56,7 +56,7 @@ class CreateSheet(Command):
         print("please enter: 'user_name sheet_name' ", end='\n>')
         username, sheet_name = input().split(' ')
 
-        if len(sheet_name):
+        if len(sheet_name) <= 0:
             raise ValueError('sheet name cannot be none')
 
         permission = PermissionFactory.owner()
