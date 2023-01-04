@@ -23,8 +23,7 @@ class CreateUser(Command):
 
 
     def execute(self, args: tuple) -> Any:
-        print("user name: ", end='\n>')
-        name = input()
+        name = input('user name:\n>')
         if len(name) <= 0:
             raise ValueError('user name cannot be none')
 
@@ -44,8 +43,7 @@ class CreateSheet(Command):
 
 
     def execute(self, args: tuple) -> Any:
-        print("please enter: 'user_name sheet_name' ", end='\n>')
-        username, sheet_name = input().split(' ')
+        username, sheet_name = input('user_name sheet_name:\n>').split(' ')
 
         if len(sheet_name) <= 0:
             raise ValueError('sheet name cannot be none')
@@ -67,8 +65,7 @@ class CheckSheet(Command):
 
 
     def execute(self, args: tuple) -> Any:
-        print("please enter: 'user_name sheet_name' ", end='\n>')
-        username, sheet_name = input().split(' ')
+        username, sheet_name = input('user_name sheet_name:\n>').split(' ')
         sheet = Database.get_instance().check_sheet(username, sheet_name)
         print(str(sheet))
         return sheet
@@ -85,8 +82,7 @@ class EditSheetValue(Command):
 
 
     def execute(self, args: tuple) -> Any:
-        print("please enter: 'user_name sheet_name' ", end='\n>')
-        username, sheet_name = input().split(' ')
+        username, sheet_name = input('user_name sheet_name:\n>').split(' ')
 
         db = Database.get_instance()
         sheet = db.check_sheet(username, sheet_name)
@@ -114,8 +110,7 @@ class EditPermission(Command):
 
 
     def execute(self, args: tuple) -> Any:
-        print("please enter: 'user_name sheet_name (ReadOnly/Editable)' ", end='\n>')
-        username, sheet_name, per_str = input().split(' ')
+        username, sheet_name, per_str = input('user_name sheet_name permission(ReadOnly/Editable):\n>').split(' ')
 
         match per_str:
             case 'ReadOnly':
@@ -144,8 +139,7 @@ class ShareToUser(Command):
 
 
     def execute(self, args: tuple) -> Any:
-        print("please enter: 'user_name sheet_name target_user' ", end='\n>')
-        username, sheet_name, target_name = input().split(' ')
+        username, sheet_name, target_name = input('user_name sheet_name target_user:\n>').split(' ')
             
         db = Database.get_instance()
         user = db.get_user_by_name(username)
