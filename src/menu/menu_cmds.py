@@ -7,6 +7,13 @@ from user_sheet.usersheet import User, Sheet
 from permission.permission import Permission, PermissionFactory
 
 
+class ArgumentError(Exception):
+    pass
+
+class ExitMenuException(Exception):
+    pass
+
+
 def less_dangerous_eval(equation):
     if not set(equation).intersection(string.ascii_letters + '{}[]_;\n'):
         return eval(equation)
@@ -118,7 +125,7 @@ class EditPermission(Command):
             case 'Editable':
                 permission = PermissionFactory.editable()
             case _:
-                raise ValueError("Input can only be `ReadOnly` or `Editable`")
+                raise ArgumentError("Input can only be `ReadOnly` or `Editable`")
             
         db = Database.get_instance()
         user = db.get_user_by_name(username)
@@ -152,9 +159,6 @@ class ShareToUser(Command):
         print(f"share sheet {sheet_name} from user {username} to {target_name}")
         return
 
-
-class ExitMenuException(Exception):
-    pass
 
 class ExitMenu(Command):
 

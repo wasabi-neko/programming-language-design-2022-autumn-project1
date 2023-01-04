@@ -3,6 +3,9 @@ import traceback
 
 from command.command import Command, CommandSet
 import menu.menu_cmds as menu_cmds
+
+from user_sheet.database import NotFoundError, DuplicatedError
+from menu.menu_cmds import ExitMenuException, ArgumentError
 from permission.permission import PermissionError
 
 
@@ -73,17 +76,10 @@ class Menu(CommandSet):
                 # execute selected command
                 self.cmds[num - 1].execute(())
 
-            # TODO: more exceptions
-            except EOFError as e:
+            except (EOFError, ExitMenuException) as e:
                 break
-            except menu_cmds.ExitMenuException as e:
-                break
-            except KeyError as e:
-                print(e)
-            except PermissionError as e:
-                print(e)
-            except ValueError as e:
-                print('input error:', e)
+            except (ArgumentError, NotFoundError, DuplicatedError, PermissionError) as e:
+                print('Error: ', e)
             except Exception as e:
                 print(e)
                 if self.debug:
