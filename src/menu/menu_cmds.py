@@ -16,17 +16,9 @@ def less_dangerous_eval(equation):
 class CreateUser(Command):
 
     def brief_description(self) -> str:
-        """return a short description of this command
-        Returns:
-            str: a short description of the command
-        """
         return """Create a user"""
 
     def help(self) -> str:
-        """return a help message for this command
-        Returns:
-            str: a help string of this command
-        """
         return """input a user name to create a user"""
 
 
@@ -45,17 +37,9 @@ class CreateUser(Command):
 class CreateSheet(Command):
 
     def brief_description(self) -> str:
-        """return a short description of this command
-        Returns:
-            str: a short description of the command
-        """
         return """Create a sheet"""
 
     def help(self) -> str:
-        """return a help message for this command
-        Returns:
-            str: a help string of this command
-        """
         return """input user name and sheet name to create a sheet"""
 
 
@@ -76,17 +60,9 @@ class CreateSheet(Command):
 class CheckSheet(Command):
 
     def brief_description(self) -> str:
-        """return a short description of this command
-        Returns:
-            str: a short description of the command
-        """
         return """Check a sheet"""
 
     def help(self) -> str:
-        """return a help message for this command
-        Returns:
-            str: a help string of this command
-        """
         return """input user name and sheet name to check a sheet"""
 
 
@@ -102,17 +78,9 @@ class CheckSheet(Command):
 class EditSheetValue(Command):
 
     def brief_description(self) -> str:
-        """return a short description of this command
-        Returns:
-            str: a short description of the command
-        """
         return """Edit a sheet"""
 
     def help(self) -> str:
-        """return a help message for this command
-        Returns:
-            str: a help string of this command
-        """
         return """input user name and sheet name to edit a sheet"""
 
 
@@ -139,17 +107,9 @@ class EditSheetValue(Command):
 class EditPermission(Command):
 
     def brief_description(self) -> str:
-        """return a short description of this command
-        Returns:
-            str: a short description of the command
-        """
         return """Edit a sheet's access right"""
 
     def help(self) -> str:
-        """return a help message for this command
-        Returns:
-            str: a help string of this command
-        """
         return """"""
 
 
@@ -177,17 +137,9 @@ class ShareToUser(Command):
     # TODO: can someone override the permission that already exist??
 
     def brief_description(self) -> str:
-        """return a short description of this command
-        Returns:
-            str: a short description of the command
-        """
         return """Collaborate with an other user."""
 
     def help(self) -> str:
-        """return a help message for this command
-        Returns:
-            str: a help string of this command
-        """
         return """enter the user name, sheet name and target user name"""
 
 
@@ -213,17 +165,9 @@ class ExitMenuException(Exception):
 class ExitMenu(Command):
 
     def brief_description(self) -> str:
-        """return a short description of this command
-        Returns:
-            str: a short description of the command
-        """
         return """Exit Menu"""
 
     def help(self) -> str:
-        """return a help message for this command
-        Returns:
-            str: a help string of this command
-        """
         return """Exit Menu uwu"""
 
 
