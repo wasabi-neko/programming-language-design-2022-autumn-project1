@@ -6,6 +6,19 @@ from permission.permission import Permission, PermissionError
 from user_sheet.usersheet import User, Sheet
 
 
+class DuplicatedError(Exception):
+
+    def __init__(self, key):
+        super().__init__(f'{key} already exist')
+        self.duplicated_key = key
+
+class NotFoundError(Exception):
+
+    def __init__(self, key):
+        super().__init__(f'{key} didn\'t exist')
+        self.notfound_key = key
+
+
 KT = TypeVar('KT')
 VT = TypeVar('VT')
 
@@ -23,7 +36,7 @@ class SafeDict(Generic[KT, VT]):
     
     def add(self, new_key: KT, val: VT) -> None:
         if new_key in self.data:
-            raise Exception(f"{new_key} already exist")
+            raise DuplicatedError(new_key)
         else:
             self.data[new_key] = val
     
@@ -32,7 +45,7 @@ class SafeDict(Generic[KT, VT]):
     
     def edit(self, key: KT, val: VT) -> None:
         if key not in self.data:
-            raise Exception(f"{key} didn't exist")
+            raise NotFoundError(key)
         else:
             self.data[key] = val
     
