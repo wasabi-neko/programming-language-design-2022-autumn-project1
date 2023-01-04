@@ -37,8 +37,7 @@ class SafeDict(Generic[KT, VT]):
     def add(self, new_key: KT, val: VT) -> None:
         if new_key in self.data:
             raise DuplicatedError(new_key)
-        else:
-            self.data[new_key] = val
+        self.data[new_key] = val
     
     def remove(self, key: KT):
         self.data.pop(key)
@@ -46,8 +45,7 @@ class SafeDict(Generic[KT, VT]):
     def edit(self, key: KT, val: VT) -> None:
         if key not in self.data:
             raise NotFoundError(key)
-        else:
-            self.data[key] = val
+        self.data[key] = val
     
     def has_key(self, key: KT) -> bool:
         return key in self.data
@@ -73,12 +71,11 @@ class Database():
         return cls._instance
 
     def __init__(self) -> None:
-        if Database._instance is None:
-            self.users = SafeDict({})
-            self.sheets = SafeDict({})
-            self.table = SafeDict({})
-        else:
-            raise Exception("class Database is a singleton. __init__ can not be called after _instance already exist")
+        assert Database._instance is None, "class Database is a singleton. __init__ can not be called after _instance already exist"
+
+        self.users = SafeDict({})
+        self.sheets = SafeDict({})
+        self.table = SafeDict({})
 
     # ----------------------------------------
     # Users methods
