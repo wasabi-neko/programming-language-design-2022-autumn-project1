@@ -1,7 +1,8 @@
 from typing import Any
+from abc import ABC, abstractmethod
 
 
-class Command():
+class Command(ABC):
 
     def ___init__(self) -> None:
         pass
@@ -9,6 +10,7 @@ class Command():
     def __str__(self) -> str:
         return 'command[' + self.brief_description() + ']'
 
+    @abstractmethod
     def brief_description(self) -> str:
         """return a short description of this command
         Returns:
@@ -16,6 +18,7 @@ class Command():
         """
         return ''
 
+    @abstractmethod
     def help(self) -> str:
         """return a help message for this command
         Returns:
@@ -24,6 +27,7 @@ class Command():
         return ''
 
 
+    @abstractmethod
     def execute(self, args: tuple) -> Any:
         """execute this command of tuple(arg1, arg2, ...)"""
         return None
