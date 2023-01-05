@@ -23,12 +23,6 @@ class Command():
         """
         return ''
 
-    def arg_requirement(self) -> tuple:
-        """
-        Returns:
-            tuple: a tuple of string representing the arg requirement
-        """
-        return ()
 
     def execute(self, args: tuple) -> Any:
         """execute this command of tuple(arg1, arg2, ...)"""
