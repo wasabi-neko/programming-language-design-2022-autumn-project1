@@ -12,11 +12,7 @@ class Sheet():
     
     def __str__(self) -> str:
         return_str = 'Sheet:\n'
-        for row in self.data:
-            for entry in row:
-                return_str += str(entry) + ', '
-            return_str += '\n'
-
+        return_str += '\n'.join(map(str, [row for row in self.data]))
         return return_str
 
     def _init_data(self, rows, cols) -> None:
