@@ -3,7 +3,7 @@ from typing import TypeVar, Generic
 import copy
 
 from permission.permission import Permission, PermissionError
-from user_sheet.usersheet import User, Sheet
+from src.model.data_type import User, Sheet
 
 
 class DuplicatedError(Exception):
@@ -19,10 +19,14 @@ class NotFoundError(Exception):
         self.notfound_key = key
 
 
+
+
 KT = TypeVar('KT')
 VT = TypeVar('VT')
 
 class SafeDict(Generic[KT, VT]):
+    """A data-structure extended from `dict`, which has more restrict access method and type checking
+    """
     data: dict[KT, VT]
 
     def __init__(self, d: dict[KT, VT]) -> None:
@@ -144,13 +148,17 @@ class Database():
         self.table.add((user, sheet), permission)
     
 
-    def edit_permission(self, user: User, sheet: Sheet, permission: Permission) -> None:
+    def edit_permission(self, username: str, sheet_name: str, permission: Permission) -> None:
+        user = self.users.get(username)
+        sheet = self.sheets.get(sheet_name)
         if self.table.has_key((user, sheet)):
             self.table.edit((user, sheet), permission)
         else:
             self.table.add((user, sheet), permission)
 
-    def get_permission(self, user: User, sheet: Sheet) -> Permission:
+    def get_permission(self, username: str, sheet_name: str) -> Permission:
+        user = self.users.get(username)
+        sheet = self.sheets.get(sheet_name)
         return self.table.get((user, sheet))
     
     def get_permission_by_name(self, username: str, sheet_name: str) -> Permission:

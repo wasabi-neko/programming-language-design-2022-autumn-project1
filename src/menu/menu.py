@@ -4,7 +4,7 @@ import traceback
 from command.command import Command, CommandSet
 import menu.menu_cmds as menu_cmds
 
-from user_sheet.database import NotFoundError, DuplicatedError
+from model.database import NotFoundError, DuplicatedError
 from menu.menu_cmds import ExitMenuException, ArgumentError
 from permission.permission import PermissionError
 

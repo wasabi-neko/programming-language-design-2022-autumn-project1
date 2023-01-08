@@ -1,5 +1,5 @@
-from user_sheet.usersheet import User, Sheet
-from user_sheet.database import Database
+from model.data_type import User, Sheet
+from model.database import Database
 from permission.permission import PermissionFactory, Permission
 
 
@@ -34,17 +34,12 @@ def edit_sheet(user_name: str, sheet_name: str, row: int, col: int, val: int):
 
 def edit_permission(user_name: str, sheet_name: str, permission: Permission):
     db = Database.get_instance()
-    user = db.get_user_by_name(user_name)
-    sheet = db.get_sheet_by_name(sheet_name)
-    db.edit_permission(user, sheet, permission)
+    db.edit_permission(user_name, sheet_name, permission)
 
 
 # TODO: can someone override the permission that already exist??
 def share_permission(user_name: str, sheet_name: str, target_name: str):
     db = Database.get_instance()
-    user = db.get_user_by_name(user_name)
-    target = db.get_user_by_name(target_name)
-    sheet = db.get_sheet_by_name(sheet_name)
-    permission = db.get_permission(user, sheet)
+    permission = db.get_permission(user_name, sheet_name)
     shared_permission = permission.max_share()
-    db.edit_permission(target, sheet, shared_permission)
+    db.edit_permission(target_name, sheet_name, shared_permission)

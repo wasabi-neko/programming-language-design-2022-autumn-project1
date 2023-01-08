@@ -3,8 +3,8 @@ from typing import Any
 
 import controller.controller as controller
 from command.command import Command
-from user_sheet.database import Database
-from user_sheet.usersheet import User, Sheet
+from model.database import Database
+from src.model.data_type import User, Sheet
 from permission.permission import Permission, PermissionFactory
 
 
