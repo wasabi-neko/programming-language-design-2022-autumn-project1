@@ -4,21 +4,8 @@ import copy, functools
 
 from permission.permission import Permission, PermissionError
 from model.data_type import User, Sheet
+from exceptions.exceptions import ArgError, DuplicatedError, NotFoundError
 
-
-class DuplicatedError(Exception):
-    def __init__(self, key):
-        super().__init__(f'{key} already exist')
-        self.duplicated_key = key
-
-class NotFoundError(Exception):
-    def __init__(self, key):
-        super().__init__(f'{key} didn\'t exist')
-        self.notfound_key = key
-
-class ArgError(Exception):
-    def __init__(self, *args: object) -> None:
-        super().__init__(*args)
 
 
 def not_null_str(arg: str):

@@ -2,24 +2,19 @@ import string
 from typing import Any
 
 import controller.controller as controller
+from exceptions.exceptions import ArgError , ExitMenuException
 from command.command import Command
 from model.database import Database
 from model.data_type import User, Sheet
 from permission.permission import Permission, PermissionFactory
 
 
-class ArgumentError(Exception):
-    pass
-
-class ExitMenuException(Exception):
-    pass
-
 
 def less_dangerous_eval(equation):
     if not set(equation).intersection(string.ascii_letters + '{}[]_;\n'):
         return eval(equation)
     else:
-        raise ArgumentError('illegal input')
+        raise ArgError('illegal input')
 
 
 class CreateUser(Command):
@@ -104,7 +99,7 @@ class EditPermission(Command):
             case 'Editable':
                 permission = PermissionFactory.editable()
             case _:
-                raise ArgumentError("Input can only be `ReadOnly` or `Editable`")
+                raise ArgError("Input can only be `ReadOnly` or `Editable`")
             
         controller.edit_permission(username, sheet_name, permission)
         print(f"user{username} to sheet{sheet_name} is set to {permission}")

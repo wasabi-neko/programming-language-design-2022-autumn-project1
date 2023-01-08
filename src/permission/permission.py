@@ -1,7 +1,5 @@
 from __future__ import annotations
-
-class PermissionError(Exception):
-    pass
+from exceptions.exceptions import PermissionError
 
 class PermissionCode(int):
     OWNED         = 0b00001
