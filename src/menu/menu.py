@@ -3,7 +3,20 @@ import traceback
 
 from command.command import Command, CommandSet
 import menu.menu_cmds as menu_cmds
-from exceptions.exceptions import AppException, ExitMenuException
+from exceptions.exceptions import AppException, ExitMenuException, ArgError
+
+
+def print_exception_info(e: Exception):
+    print(str(e.__traceback__))
+    error_class = e.__class__.__name__ 
+    detail = e.args[0] 
+    cl, exc, tb = sys.exc_info() 
+    lastCallStack = traceback.extract_tb(tb)[-1]
+    fileName = lastCallStack[0]
+    lineNum = lastCallStack[1]
+    funcName = lastCallStack[2]
+    errMsg = "File \"{}\", line {}, in {}: [{}] {}".format(fileName, lineNum, funcName, error_class, detail)
+    print(errMsg)
 
 
 class Menu(CommandSet):
@@ -52,44 +65,38 @@ class Menu(CommandSet):
             print(f"{i+1}. ", end='')
             print(cmd.help())
         print('---')
+    
 
+    def read_cmd_num(self) -> int:
+        str_in = input('>')
+        if not str_in.isnumeric():
+            raise  ArgError('please input a number')
+        return int(str_in)
+        
 
     def menu_loop(self) -> None:
-        while(True):
+        continue_loop = True
+        while(continue_loop):
             # prompt
             if not self.no_prompt:
                 self.print_all_cmd()
 
             # command
             try:
-                str_in = input('>')
-                num = 0
-                if str_in.isnumeric():
-                    num = int(str_in)
-                else:
-                    print('please input a number')
-                    break
-
+                num = self.read_cmd_num()
                 # execute selected command
                 self.cmds[num - 1].execute(())
 
             except (EOFError, ExitMenuException) as e:
-                break
+                continue_loop = False
+                continue
+
             except (AppException) as e:
                 print('Error: ', e)
+
             except Exception as e:
-                print(e)
                 if self.debug:
-                    print(str(e.__traceback__))
-                    error_class = e.__class__.__name__ 
-                    detail = e.args[0] 
-                    cl, exc, tb = sys.exc_info() 
-                    lastCallStack = traceback.extract_tb(tb)[-1]
-                    fileName = lastCallStack[0]
-                    lineNum = lastCallStack[1]
-                    funcName = lastCallStack[2]
-                    errMsg = "File \"{}\", line {}, in {}: [{}] {}".format(fileName, lineNum, funcName, error_class, detail)
-                    print(errMsg)
-        
+                    print_exception_info(e)
+        # End menu loop----------------------------------------
         print("bye")
     
