@@ -1,23 +1,51 @@
 from __future__ import annotations
 from typing import TypeVar, Generic
-import copy
+import copy, functools
 
 from permission.permission import Permission, PermissionError
 from model.data_type import User, Sheet
 
 
 class DuplicatedError(Exception):
-
     def __init__(self, key):
         super().__init__(f'{key} already exist')
         self.duplicated_key = key
 
 class NotFoundError(Exception):
-
     def __init__(self, key):
         super().__init__(f'{key} didn\'t exist')
         self.notfound_key = key
 
+class ArgError(Exception):
+    def __init__(self, *args: object) -> None:
+        super().__init__(*args)
+
+
+def not_null_str(arg: str):
+    if type(arg) != str:
+        raise ArgError("input type must be string")
+    if len(arg) <= 0:
+        raise ArgError("length of input string must greater than 0")
+    if arg.count(' ') > 0:
+        raise ArgError("input cannot contain space character")
+    return arg
+
+
+def arg_check(*validators):
+    """return a decorator"""
+    def decorator(func):
+        @functools.wraps(func)
+        def wrap(*args, **kwargs):
+            n = len(validators)
+            for (arg, validator) in zip(args[:n], validators):
+                validator(arg)
+            return func(*args, **kwargs)
+        return wrap
+    return decorator
+
+
+def method_arg_check(*validators):
+    return arg_check(lambda x: True, *validators)
 
 
 
@@ -84,25 +112,30 @@ class Database():
     # ----------------------------------------
     # Users methods
     # ----------------------------------------
+    @method_arg_check(not_null_str)
     def get_user_by_name(self, name: str) -> User:
         return self.users.get(name)
 
     
+    @method_arg_check(not_null_str)
     def add_user(self, username: str):
         user = User(username)
         self.users.add(username, user)
     
 
+    @method_arg_check(not_null_str)
     def rm_user_by_name(self, name: str):
         self.users.remove(name)
 
     # ----------------------------------------
     # Sheets methods
     # ----------------------------------------
+    @method_arg_check(not_null_str)
     def get_sheet_by_name(self, name: str) -> Sheet:
         return self.sheets.get(name)
 
 
+    @method_arg_check(not_null_str, not_null_str)
     def new_sheet(self, username: str, sheet_name: str, permission: Permission) -> None:
         user = self.users.get(username)
         sheet = Sheet(sheet_name)
@@ -110,6 +143,7 @@ class Database():
         self._insert(user, sheet, permission)
     
 
+    @method_arg_check(not_null_str, not_null_str)
     def check_sheet(self, username: str, sheet_name: str) -> Sheet:
         user = self.users.get(username)
         sheet = self.sheets.get(sheet_name)
@@ -125,6 +159,7 @@ class Database():
         return copy.deepcopy(sheet)
     
 
+    @method_arg_check(not_null_str, not_null_str)
     def update_sheet(self, username: str, sheet_name: str, new_sheet: Sheet) -> None:
         user = self.users.get(username)
         sheet = self.sheets.get(sheet_name)
@@ -140,7 +175,6 @@ class Database():
         sheet.update_data(new_sheet)
 
         
-
     # ----------------------------------------
     # UserSheetTable methods
     # ----------------------------------------
@@ -148,6 +182,7 @@ class Database():
         self.table.add((user, sheet), permission)
     
 
+    @method_arg_check(not_null_str, not_null_str)
     def edit_permission(self, username: str, sheet_name: str, permission: Permission) -> None:
         user = self.users.get(username)
         sheet = self.sheets.get(sheet_name)
@@ -156,11 +191,13 @@ class Database():
         else:
             self.table.add((user, sheet), permission)
 
+    @method_arg_check(not_null_str, not_null_str)
     def get_permission(self, username: str, sheet_name: str) -> Permission:
         user = self.users.get(username)
         sheet = self.sheets.get(sheet_name)
         return self.table.get((user, sheet))
     
+    @method_arg_check(not_null_str, not_null_str)
     def get_permission_by_name(self, username: str, sheet_name: str) -> Permission:
         user = self.users.get(username)
         sheet = self.sheets.get(sheet_name)
