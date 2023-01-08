@@ -37,34 +37,33 @@ class Menu(CommandSet):
         self.add_cmd(menu_cmds.ExitMenu())
     
 
-    def print_all_cmd(self) -> None:
-        cmd_str = ''
-        max_cmd_len = 0
+    def content_border(self, content: list[str], title: str, border: str) -> str:
+        max_len = len(max(content, key=len))
+        result = '\n'
+        result += border * int((max_len - len(title)) / 2)
+        result += title
+        result += border * int((max_len - len(title)) / 2) + '\n'
+        result += ''.join(content)
+        result += border * max_len
+        return result
+    
 
+    def print_all_cmd(self) -> None:
+        cmd_strs = []
         for i, cmd in enumerate(self.cmds):
-            line = f"{i+1}. "
-            line += cmd.brief_description()
-            max_cmd_len = len(line) if len(line) > max_cmd_len else max_cmd_len
-            cmd_str += line + '\n'
+            cmd_strs.append(f"{i+1}. {cmd.brief_description()}\n")
         
-        name = 'menu'
-        print_str = '\n'
-        print_str += "-" * int((max_cmd_len - len(name)) / 2)
-        print_str += name
-        print_str += "-" * int((max_cmd_len - len(name)) / 2)
-        print_str += '\n'
-        print_str += cmd_str
-        print_str += '-' * max_cmd_len
+        print_str = self.content_border(cmd_strs, 'Menu', '-')
         print(print_str)
 
 
     def print_help(self) -> None:
-        # TODO: length of prompt 
-        print('---help--')
+        cmd_strs = []
         for i, cmd in enumerate(self.cmds):
-            print(f"{i+1}. ", end='')
-            print(cmd.help())
-        print('---')
+            cmd_strs.append(f"{i+1}. {cmd.help()}\n")
+        
+        print_str = self.content_border(cmd_strs, 'HELP', '-')
+        print(print_str)
     
 
     def read_cmd_num(self) -> int:
