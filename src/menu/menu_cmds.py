@@ -4,7 +4,7 @@ from typing import Any
 import controller.controller as controller
 from command.command import Command
 from model.database import Database
-from src.model.data_type import User, Sheet
+from model.data_type import User, Sheet
 from permission.permission import Permission, PermissionFactory
 
 

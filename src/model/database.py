@@ -3,7 +3,7 @@ from typing import TypeVar, Generic
 import copy
 
 from permission.permission import Permission, PermissionError
-from src.model.data_type import User, Sheet
+from model.data_type import User, Sheet
 
 
 class DuplicatedError(Exception):
